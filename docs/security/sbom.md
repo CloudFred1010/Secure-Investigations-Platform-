@@ -1,1 +1,2 @@
-# Software Bill of Materials (SBOM)\n\nRecord dependencies and generate SBOM artifacts.
+# SBOM
+Placeholder — SBOM will be generated automatically in CI/CD pipelines.

@@ -1,1 +1,2 @@
-# System Architecture\n\nDescribe components and architecture diagram here.
+# Architecture
+Placeholder for system architecture. Will be finalised once infrastructure and CI/CD are implemented.

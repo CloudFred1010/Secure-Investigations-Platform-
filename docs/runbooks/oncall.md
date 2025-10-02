@@ -1,1 +1,2 @@
-# On-call Runbook\n\nResponsibilities and escalation process for on-call engineers.
+# On-Call Runbook
+Placeholder for guidance during on-call shifts.

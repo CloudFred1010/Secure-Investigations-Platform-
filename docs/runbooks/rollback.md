@@ -1,1 +1,2 @@
-# Rollback Runbook\n\nSteps to rollback a failed release.
+# Rollback Runbook
+Placeholder for safe rollback procedure.

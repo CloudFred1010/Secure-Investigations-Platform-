@@ -1,1 +1,2 @@
-# Service Level Objectives (SLOs) and Indicators (SLIs)\n\nDefine SLOs and SLIs for availability, latency, error rate.
+# SLA/SLO/SLI
+Placeholder for defining uptime, latency, and error budgets.
