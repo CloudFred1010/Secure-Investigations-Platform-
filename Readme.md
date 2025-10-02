@@ -31,7 +31,6 @@ This project demonstrates the ability to provide **end-to-end lifecycle support*
 - **Networking**: App Service restrictions + SQL firewall.  
 - **Compliance/Security**: Defender for Cloud enabled.  
 
-![Architecture Diagram](docs/architecture.png)  
 
 ---
 
