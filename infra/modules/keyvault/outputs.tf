@@ -10,21 +10,21 @@ output "key_vault_id" {
   value       = azurerm_key_vault.this.id
 }
 
-# Expose the Secret URI for SQL admin password
+# Expose Key Vault URI
+output "key_vault_uri" {
+  description = "The base URI of the Key Vault (used for Key Vault references in App Services)"
+  value       = azurerm_key_vault.this.vault_uri
+}
+
+# (Optional) Expose secret URIs as strings (not managed by Terraform)
 output "sql_admin_password_secret_uri" {
   description = "The versionless URI of the SQL admin password secret in Key Vault"
-  value       = azurerm_key_vault_secret.sql_admin_password.versionless_id
+  value       = "${azurerm_key_vault.this.vault_uri}secrets/sql-admin-password/"
   sensitive   = true
 }
 
-# Expose the Secret URI for SQL connection string
 output "sql_connection_string_secret_uri" {
   description = "The versionless URI of the SQL connection string secret in Key Vault"
-  value       = azurerm_key_vault_secret.sql_connection_string.versionless_id
+  value       = "${azurerm_key_vault.this.vault_uri}secrets/sql-connection-string/"
   sensitive   = true
-}
-
-output "keyvault_id" {
-  description = "The resource ID of the Key Vault"
-  value       = azurerm_key_vault.this.id
 }

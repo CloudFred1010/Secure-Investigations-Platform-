@@ -36,7 +36,7 @@ variable "client_ip" {
   type        = string
 }
 
-# --- Added for SQL auditing & vulnerability assessments ---
+# --- For SQL auditing & vulnerability assessments ---
 variable "audit_storage_endpoint" {
   description = "Blob storage endpoint used to store SQL audit logs (e.g., https://mystorage.blob.core.windows.net/)"
   type        = string

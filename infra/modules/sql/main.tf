@@ -38,11 +38,11 @@ resource "azurerm_mssql_server_security_alert_policy" "alerts" {
 }
 
 # Vulnerability Assessment (reuses same storage account)
-resource "azurerm_mssql_server_vulnerability_assessment" "va" {
-  server_security_alert_policy_id = azurerm_mssql_server_security_alert_policy.alerts.id
-  storage_container_path          = "${var.audit_storage_endpoint}/sql-va/"
-  storage_account_access_key      = var.audit_storage_key
-}
+#resource "azurerm_mssql_server_vulnerability_assessment" "va" {
+# server_security_alert_policy_id = azurerm_mssql_server_security_alert_policy.alerts.id
+#storage_container_path          = "${var.audit_storage_endpoint}/sql-va/"
+#storage_account_access_key      = var.audit_storage_key
+#}
 
 # Firewall Rule — only allow your client IP
 resource "azurerm_mssql_firewall_rule" "allow_client_ip" {

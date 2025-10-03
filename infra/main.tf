@@ -85,7 +85,7 @@ module "diagnostics_staticwebapp" {
 module "diagnostics_keyvault" {
   source       = "./modules/diagnostics_keyvault"
   workspace_id = module.appinsights.log_analytics_workspace_id
-  keyvault_id  = module.keyvault.keyvault_id
+  keyvault_id  = module.keyvault.key_vault_id
 }
 
 # Diagnostics Module (SQL Database → Log Analytics)

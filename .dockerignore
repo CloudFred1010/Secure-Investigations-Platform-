@@ -1,16 +1,28 @@
-# Ignore everything unnecessary in Docker builds
+# Node.js / React
+frontend/node_modules
+frontend/coverage
+frontend/build
+frontend/dist
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# Terraform
+infra/.terraform
+infra/*.tfstate
+infra/*.tfstate.*
+infra/*.tfplan
+
+# Git
 .git
 .gitignore
+
+# Misc
+*.log
 .vscode
-node_modules
-npm-debug.log
-yarn-error.log
-coverage
-build
-dist
-.env
-*.tfstate
-*.tfstate.*
-.terraform/
-*.md
-docs/
+.idea
+.DS_Store
+Thumbs.db

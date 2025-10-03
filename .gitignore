@@ -9,47 +9,39 @@ Thumbs.db
 # -----------------------------
 # Node.js / React (Frontend SPA)
 # -----------------------------
-node_modules/
+frontend/node_modules/
+frontend/coverage/
+frontend/build/
+frontend/dist/
+frontend/.cache/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-coverage/
-build/
-dist/
-.cache/
-package-lock.json
-yarn.lock
+
+# Keep package-lock.json for reproducible builds
+# (comment out if you don’t want it in git)
+# package-lock.json
 
 # -----------------------------
-# .NET (Backend API)
-# -----------------------------
-bin/
-obj/
-*.user
-*.suo
-*.dll
-*.pdb
-*.exe
-
-# -----------------------------
-# Terraform
-# -----------------------------
-*.tfstate
-*.tfstate.*
-.terraform/
-.terraform.lock.hcl
-crash.log
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-
-# -----------------------------
-# Python (if used for scripts)
+# Python (Backend API)
 # -----------------------------
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+*.egg-info/
+.venv/
+.env
+
+# -----------------------------
+# Terraform
+# -----------------------------
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/*.tfstate
+infra/*.tfstate.*
+infra/crash.log
+infra/*.tfplan
 
 # -----------------------------
 # Docker
@@ -63,7 +55,6 @@ __pycache__/
 *.key
 *.pem
 *.crt
-.env
 secrets.json
 
 # -----------------------------
@@ -71,7 +62,10 @@ secrets.json
 # -----------------------------
 .azure-pipelines/
 
-# Terraform plan output
-*.tfplan
-# Ignore Python virtual environments
-.venv/
+
+# Terraform bootstrap state
+infra/bootstrap-tfstate/.terraform/
+infra/bootstrap-tfstate/.terraform.lock.hcl
+infra/bootstrap-tfstate/terraform.tfstate
+infra/tfplan
+app/

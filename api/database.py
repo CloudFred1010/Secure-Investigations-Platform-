@@ -1,39 +1,23 @@
 from typing import Dict
-from .models import Case
 from datetime import datetime
+from api.models import Case  # ✅ fixed import
 
-# In-memory store for now
-cases: Dict[int, Case] = {}
-next_id = 1
+# Simulated DB (just a dictionary for now)
+cases_db: Dict[int, Case] = {}
+case_counter = 0
 
-def create_case(title: str, description: str = "") -> Case:
-    global next_id
-    case = Case(
-        id=next_id,
+
+def create_case(title: str, description: str = None) -> Case:
+    global case_counter
+    case_counter += 1
+    now = datetime.utcnow()
+    new_case = Case(
+        id=case_counter,
         title=title,
         description=description,
-        created_at=datetime.utcnow(),
-        updated_at=datetime.utcnow()
+        status="open",
+        created_at=now,
+        updated_at=now,
     )
-    cases[next_id] = case
-    next_id += 1
-    return case
-
-def get_case(case_id: int) -> Case | None:
-    return cases.get(case_id)
-
-def list_cases():
-    return list(cases.values())
-
-def update_case(case_id: int, title: str, description: str, status: str) -> Case | None:
-    case = cases.get(case_id)
-    if case:
-        case.title = title
-        case.description = description
-        case.status = status
-        case.updated_at = datetime.utcnow()
-        cases[case_id] = case
-    return case
-
-def delete_case(case_id: int) -> bool:
-    return cases.pop(case_id, None) is not None
+    cases_db[new_case.id] = new_case
+    return new_case
