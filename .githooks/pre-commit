@@ -58,9 +58,9 @@ fi
 # ------------------------------
 # 5. Frontend Linting
 # ------------------------------
-if [ -f "app/web/package.json" ]; then
+if [ -f "frontend/package.json" ]; then
   echo "[5/5] Running frontend lint checks..."
-  if ! (cd app/web && npm run lint); then
+  if ! (cd frontend && npm run lint); then
     echo "ERROR: Frontend linting failed. Fix issues before committing."
     exit 1
   fi
