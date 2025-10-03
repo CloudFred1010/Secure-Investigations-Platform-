@@ -73,3 +73,5 @@ secrets.json
 
 # Terraform plan output
 *.tfplan
+# Ignore Python virtual environments
+.venv/
