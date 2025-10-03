@@ -8,7 +8,7 @@ resource "azurerm_mssql_server" "this" {
   administrator_login_password = var.sql_admin_password
 
   minimum_tls_version           = "1.2"
-  public_network_access_enabled = false # Disable public access (use private endpoint instead)
+  public_network_access_enabled = true # enable for PoC so firewall rules can apply
 
   tags = var.tags
 }
@@ -22,7 +22,6 @@ resource "azurerm_mssql_database" "this" {
   tags = var.tags
 }
 
-# Extended Auditing Policy (logs -> storage account)
 resource "azurerm_mssql_server_extended_auditing_policy" "audit" {
   server_id                  = azurerm_mssql_server.this.id
   storage_endpoint           = var.audit_storage_endpoint
@@ -30,21 +29,12 @@ resource "azurerm_mssql_server_extended_auditing_policy" "audit" {
   retention_in_days          = 90
 }
 
-# Security Alerts (SQL threat detection)
 resource "azurerm_mssql_server_security_alert_policy" "alerts" {
   server_name         = azurerm_mssql_server.this.name
   resource_group_name = var.resource_group_name
   state               = "Enabled"
 }
 
-# Vulnerability Assessment (reuses same storage account)
-#resource "azurerm_mssql_server_vulnerability_assessment" "va" {
-# server_security_alert_policy_id = azurerm_mssql_server_security_alert_policy.alerts.id
-#storage_container_path          = "${var.audit_storage_endpoint}/sql-va/"
-#storage_account_access_key      = var.audit_storage_key
-#}
-
-# Firewall Rule — only allow your client IP
 resource "azurerm_mssql_firewall_rule" "allow_client_ip" {
   name             = "AllowClientIP"
   server_id        = azurerm_mssql_server.this.id

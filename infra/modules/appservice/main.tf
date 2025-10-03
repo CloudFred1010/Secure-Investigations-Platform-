@@ -24,12 +24,14 @@ resource "azurerm_linux_web_app" "this" {
     health_check_path = "/health"
   }
 
+  # Enable system-assigned managed identity
   identity {
     type = "SystemAssigned"
   }
 
   app_settings = {
-    "DB_CONNECTION_STRING" = "@Microsoft.KeyVault(SecretUri=${var.sql_connection_string_secret_uri})"
+    # Use Key Vault reference for the SQL connection string
+    DB_CONNECTION_STRING = "@Microsoft.KeyVault(SecretUri=${var.sql_connection_string_secret_uri})"
   }
 
   tags = var.tags

@@ -4,7 +4,7 @@ output "key_vault_name" {
   value       = azurerm_key_vault.this.name
 }
 
-# Expose Key Vault ID
+# Expose Key Vault ID (single output only)
 output "key_vault_id" {
   description = "The resource ID of the Key Vault"
   value       = azurerm_key_vault.this.id
