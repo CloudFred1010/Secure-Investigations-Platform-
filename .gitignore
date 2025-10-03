@@ -69,3 +69,4 @@ infra/bootstrap-tfstate/.terraform.lock.hcl
 infra/bootstrap-tfstate/terraform.tfstate
 infra/tfplan
 app/
+.githooks/
