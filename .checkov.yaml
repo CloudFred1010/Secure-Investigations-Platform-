@@ -1,0 +1,2 @@
+skip-check:
+  - CKV2_AZURE_1  # Skip CMK requirement for storage account (PoC only)
