@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Backend: Python API
+      # ===== Backend: Python API =====
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -34,12 +34,11 @@ jobs:
         working-directory: api
         run: pytest -v || true
 
-      # Frontend: React SPA
+      # ===== Frontend: React SPA =====
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-          # Removed cache since no lock file committed
 
       - name: Install frontend dependencies
         working-directory: frontend
@@ -51,13 +50,33 @@ jobs:
           npm run lint
           npm run build
 
-      # Security Scanning
+      # ===== Security Scanning =====
       - name: Run Gitleaks for secret scanning
         uses: gitleaks/gitleaks-action@v2
         with:
           args: detect --source . --no-banner --redact
 
-      # Terraform Validation
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python,javascript
+
+      - name: Run CodeQL Analysis (SAST)
+        uses: github/codeql-action/analyze@v3
+
+      - name: Run Checkov for Terraform (IaC Scan)
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: infra
+
+      - name: Run Trivy for container scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+      # ===== Terraform Validation =====
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
         with:

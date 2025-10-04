@@ -1,0 +1,102 @@
+name: Deploy Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  # =====================
+  # 1. Terraform Deploy
+  # =====================
+  terraform-apply:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+
+  # =====================
+  # 2. Deploy Backend API
+  # =====================
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: terraform-apply
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy API to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_API_APP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: ./api
+
+  # =====================
+  # 3. Deploy Frontend SPA
+  # =====================
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: terraform-apply
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy Frontend to Azure Static Web Apps
+        uses: azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          app_location: "frontend"
+          output_location: "frontend/build"
+
+  # =====================
+  # 4. DAST Scan
+  # =====================
+  dast-scan:
+    runs-on: ubuntu-latest
+    needs: [deploy-backend, deploy-frontend]
+    steps:
+      - name: OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.8.0
+        with:
+          target: ${{ secrets.API_DEV_URL }}
+
+  # =====================
+  # 5. Promote to Production
+  # =====================
+  promote-to-prod:
+    runs-on: ubuntu-latest
+    needs: dast-scan
+    environment:
+      name: production
+      url: ${{ secrets.API_PROD_URL }}
+    steps:
+      - name: Manual Approval Gate
+        run: echo "Waiting for manual approval..."
+
+      - name: Swap Staging to Production
+        run: |
+          echo "Simulating slot swap or blue/green release"
+          # Example for slot swap:
+          # az webapp deployment slot swap \
+          #   --name ${{ secrets.AZURE_API_APP_NAME }} \
+          #   --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          #   --slot staging \
+          #   --target-slot production
