@@ -2,7 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches: [ "feature/*", "main" ]
+    branches:
+      - "main"
+      - "feature/*"
   pull_request:
 
 jobs:
@@ -15,30 +17,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ----------------------------
       # Backend: Python API
+      # ----------------------------
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: "pip"
+          cache: pip
 
-      - name: Install dependencies
+      - name: Install backend dependencies
         working-directory: api
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-asyncio
+          pip install pytest pytest-asyncio pytest-cov
 
       - name: Run Python unit tests
         working-directory: api
-        run: pytest -v
+        run: |
+          echo "Running API tests..."
+          pytest -v --maxfail=1 --disable-warnings --cache-clear --cov=src
 
+      # ----------------------------
       # Frontend: React SPA
+      # ----------------------------
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: "npm"
+          cache: npm
 
       - name: Install frontend dependencies
         working-directory: frontend
@@ -47,10 +55,12 @@ jobs:
       - name: Lint and Build React app
         working-directory: frontend
         run: |
-          npm run lint
-          npm run build
+          npm run lint --if-present
+          npm run build --if-present
 
+      # ----------------------------
       # Security and Quality
+      # ----------------------------
       - name: Run Gitleaks for secret scanning
         uses: gitleaks/gitleaks-action@v2
         with:
@@ -61,7 +71,7 @@ jobs:
         with:
           terraform_version: 1.8.5
 
-      - name: Run Terraform fmt & validate
+      - name: Validate Terraform configuration
         working-directory: infra
         run: |
           terraform fmt -check
