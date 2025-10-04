@@ -60,7 +60,7 @@ This project demonstrates the ability to provide **end-to-end lifecycle support*
 - Defender for Cloud enabled.  
 
 ### 5. CI/CD Automation  
-- Multi-stage Azure DevOps pipeline with:  
+- Multi-stage Github actions pipeline with:  
   - **Build & Test** (compile, unit tests, SBOM).  
   - **Security Scans** (SAST, SCA, secrets, IaC, container).  
   - **Deploy** (Terraform apply, app deploy, secrets injection).  
