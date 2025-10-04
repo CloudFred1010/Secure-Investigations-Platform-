@@ -1,0 +1,33 @@
+name: Security Scanning
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  codeql:
+    uses: github/codeql-action/init@v3
+    with:
+      languages: python, javascript
+  analyze:
+    uses: github/codeql-action/analyze@v3
+
+  iac-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: infra/
+
+  container-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          ignore-unfixed: true
