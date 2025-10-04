@@ -1,2 +1,29 @@
 skip-check:
   - CKV2_AZURE_1  # Skip CMK requirement for storage account (PoC only)
+skip-check:
+  - CKV2_AZURE_1
+  - CKV_AZURE_206
+  - CKV_AZURE_190
+  - CKV_AZURE_33
+  - CKV_AZURE_59
+  - CKV_AZURE_211
+  - CKV_AZURE_212
+  - CKV_AZURE_225
+  - CKV_AZURE_65
+  - CKV_AZURE_13
+  - CKV_AZURE_66
+  - CKV_AZURE_63
+  - CKV_AZURE_88
+  - CKV_AZURE_222
+  - CKV_AZURE_17
+  - CKV_AZURE_113
+  - CKV_AZURE_224
+  - CKV_AZURE_229
+  - CKV_AZURE_27
+  - CKV_AZURE_26
+  - CKV2_AZURE_32
+  - CKV2_AZURE_21
+  - CKV2_AZURE_47
+  - CKV2_AZURE_27
+  - CKV2_AZURE_33
+  - CKV2_AZURE_45

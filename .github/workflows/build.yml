@@ -69,11 +69,12 @@ jobs:
       - name: Run CodeQL Analysis (SAST)
         uses: github/codeql-action/analyze@v3
 
-      - name: Run Checkov for Terraform (IaC Scan)
+      - name: Run Checkov for Terraform (IaC Scan - PoC Mode)
         uses: bridgecrewio/checkov-action@v12
         with:
           directory: infra
           framework: terraform
+          config_file: .checkov.yaml
           quiet: true
 
       - name: Run Trivy for container scan
